@@ -19,9 +19,9 @@ fun Project.configureDistribution(is18: Boolean) {
         archiveClassifier.set("shaded")
         setVersion(project.version)
 
-        relocate("org.antlr", "org.anti_ad.mc.common.embedded.org.antlr")
-        relocate("org.apache.commons", "org.anti_ad.mc.common.embedded.org.apache.commons")
-        relocate("kotlin", "org.anti_ad.mc.common.embedded.kotlin")
+        relocate("org.antlr", "org.anti_ad.mc.sbt.common.embedded.org.antlr")
+        relocate("org.apache.commons", "org.anti_ad.mc.sbt.common.embedded.org.apache.commons")
+        relocate("kotlin", "org.anti_ad.mc.sbt.common.embedded.kotlin")
 
         //include("assets/**")
 

@@ -7,9 +7,9 @@
 
   ],
   "client": [
-    "MixinClientPlayerInteractionManager",
-    "MixinGameRenderer",
-    "MixinMinecraftClient",
+    "org.anti_ad.mc.sbt.ipnext.mixin.MixinClientPlayerInteractionManager",
+    "org.anti_ad.mc.sbt.ipnext.mixin.MixinGameRenderer",
+    "org.anti_ad.mc.sbt.ipnext.mixin.MixinMinecraftClient"
   ],
   "injectors": {
     "defaultRequire": 1

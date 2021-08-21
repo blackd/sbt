@@ -1,12 +1,12 @@
 {
   "required": true,
-  "package": "org.anti_ad.mc.common.mixin",
+  "package": "org.anti_ad.mc.sbt.common.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
   ],
   "client": [
-    "MixinKeyboard",
-    "MixinMouse"
+    "org.anti_ad.mc.sbt.common.mixin.MixinKeyboard",
+    "org.anti_ad.mc.sbt.common.mixin.MixinMouse"
   ],
   "injectors": {
     "defaultRequire": 1

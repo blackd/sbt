@@ -19,7 +19,7 @@
       "org.anti_ad.mc.ipnext.InventoryProfilesKt::init"
     ],
     "modmenu": [
-      "org.anti_ad.mc.ipnext.compat.ModMenuApiImpl"
+      "org.anti_ad.mc.sbt.ipnext.compat.ModMenuApiImpl"
     ]
   },
   "mixins": [

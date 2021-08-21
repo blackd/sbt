@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "id": "smallbuildtweaks",
   "version": "@VERSION@",
-  "name": "Inventory Profiles Next",
-  "description": "Take control over your inventory",
+  "name": "Small Build Tweaks",
+  "description": "Build It",
   "authors": [
     "mirinimi/blackd"
   ],
@@ -16,14 +16,14 @@
   "environment": "client",
   "entrypoints": {
     "main": [
-      "org.anti_ad.mc.ipnext.InventoryProfilesKt::init"
+      "org.anti_ad.mc.sbt.ipnext.InventoryProfilesKt::init"
     ],
     "modmenu": [
-      "org.anti_ad.mc.ipnext.compat.ModMenuApiImpl"
+      "org.anti_ad.mc.sbt.ipnext.compat.ModMenuApiImpl"
     ]
   },
   "mixins": [
-    "mixins.common.json",
+    "mixins.smallbuildtweaks-common.json",
     "mixins.smallbuildtweaks.json"
   ],
   "depends": {

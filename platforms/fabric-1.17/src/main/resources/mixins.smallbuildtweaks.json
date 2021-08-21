@@ -1,7 +1,7 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "org.anti_ad.mc.ipnext.mixin",
+  "package": "org.anti_ad.mc.sbt.ipnext.mixin",
   "compatibilityLevel": "JAVA_16",
   "mixins": [
 
