@@ -1,6 +1,8 @@
 **[![8][8]][7]**
 # Small Build Tweaks
 
+**Disclaimer:** This mod contains facilities that are considered cheat on most servers. Please use them in singleplayer or make sure they are allowed on the servers you play on, or you could be kicked or banned
+
 This mod contains the tweaks removed in this release of [Inventory Profile Next][2]
 
 ## Will this mod be released on CurseForge, Modrinth, somewhere else.
