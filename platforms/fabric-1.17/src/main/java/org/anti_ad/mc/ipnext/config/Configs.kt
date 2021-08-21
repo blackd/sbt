@@ -17,7 +17,7 @@ private const val category = "smallbuildtweaks.config.category"
 object Tweaks : ConfigDeclaration {
     override val builder = createBuilder()
         .CATEGORY("$category.hotkeys")
-    val OPEN_CONFIG_MENU                          /**/ by hotkey("LEFT_SHIFT,\\",
+    val OPEN_CONFIG_MENU                          /**/ by hotkey("M,L",
                                                                  KeybindSettings.INGAME_DEFAULT)
         .CATEGORY("$category.survival")
     val INSTANT_MINING_COOLDOWN                   /**/ by hotkeyedBool(false)
