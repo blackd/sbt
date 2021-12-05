@@ -11,7 +11,7 @@ NO
 
 Minimal efforts will be made to make it work on major version updates of Minecraft.
 
-[2]: https://github.com/blackd/Inventory-Profiles/releases/tag/v1.0.0
+[2]: https://github.com/blackd/Inventory-Profiles/releases/
 [7]: https://discord.gg/23YCxmveUM
 [8]: https://img.shields.io/discord/861171785897738240?label=Discord&logo=discord&style=plastic
 
