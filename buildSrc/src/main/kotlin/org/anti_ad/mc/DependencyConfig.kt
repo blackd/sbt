@@ -26,8 +26,7 @@ fun Project.configureDependencies() {
         maven { url = uri("https://maven.enginehub.org/repo/") }
         maven { url = uri("https://repo.codemc.org/repository/maven-public") }
         maven { url = uri("https://papermc.io/repo/repository/maven-public/") }
-        maven("https://raw.githubusercontent.com/TerraformersMC/Archive/main/releases")
-        //maven { url = uri("https://maven.terraformersmc.com/releases") }
+        maven { url = uri("https://maven.terraformersmc.com/releases") }
         maven { url = uri("https://hub.spigotmc.org/nexus/content/repositories/snapshots/") }
         maven { url = uri("https://hub.spigotmc.org/nexus/content/repositories/releases/") }
         maven { url = uri("https://maven.fabricmc.net/") }
@@ -38,10 +37,4 @@ fun Project.configureDependencies() {
         "api"("org.jetbrains:annotations:20.1.0")
     }
 
-}
-
-fun Project.addPostDeps() {
-    buildscript {
-        dependencies.classpath("com.guardsquare:proguard-gradle:7.1.0-beta5")
-    }
 }

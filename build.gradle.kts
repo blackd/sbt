@@ -5,11 +5,11 @@ import java.io.ByteArrayOutputStream
 
 buildscript {
     dependencies {
-        classpath("com.guardsquare:proguard-gradle:7.1.0-beta5")
+        classpath("com.guardsquare:proguard-gradle:7.2.0-beta2")
     }
 }
 
-val versionObj = Version("1", "0", "1",
+val versionObj = Version("1", "0", "2",
                              preRelease = (System.getenv("IPNEXT_RELEASE") == null))
 
 
@@ -28,7 +28,7 @@ repositories {
 
 plugins {
     `maven-publish`
-    kotlin("jvm") version "1.5.21"
+    kotlin("jvm") version "1.6.0"
     idea
     
 }

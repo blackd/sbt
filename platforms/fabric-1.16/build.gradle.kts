@@ -1,6 +1,6 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import com.modrinth.minotaur.TaskModrinthUpload
-import net.fabricmc.loom.LoomGradleExtension
+//import net.fabricmc.loom.LoomGradleExtension
 import net.fabricmc.loom.task.RemapJarTask
 import org.anti_ad.mc.configureCommon
 import proguard.gradle.ProGuardTask
@@ -36,6 +36,24 @@ configureCommon()
 
 group = "org.anti_ad.mc.fabric_1_16"
 
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_11
+}
+
+val compileKotlin: org.jetbrains.kotlin.gradle.tasks.KotlinCompile by tasks
+compileKotlin.kotlinOptions {
+    languageVersion = "1.5"
+    jvmTarget = "1.8"
+}
+
+//this is here so we always compile for 1.8
+tasks.withType<JavaCompile> {
+    this.targetCompatibility = "1.8"
+}
+
+group = "org.anti-ad.mc"
+
 configure<JavaPluginExtension> {
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8
@@ -45,7 +63,7 @@ dependencies {
     "shadedApi"(project(":common"))
     "implementation"("org.apache.commons:commons-rng-core:1.3")
     "implementation"("commons-io:commons-io:2.4")
-    "implementation"("com.guardsquare:proguard-gradle:7.1.0-beta5")
+    implementation("com.guardsquare:proguard-gradle:7.1.1")
     "minecraft"("com.mojang:minecraft:1.16.5")
     "mappings"("net.fabricmc:yarn:1.16.5+build.9:v2")
     "modImplementation"("net.fabricmc:fabric-loader:0.11.6")
@@ -53,9 +71,12 @@ dependencies {
     "modImplementation"("com.terraformersmc:modmenu:1.16.9")
 }
 
-minecraft{
+loom {
     runConfigs["client"].runDir = "run/1.16.5"
     runConfigs["client"].programArgs += listOf("--width=1280", "--height=720", "--username=DEV")
+    //refmapName = "inventoryprofilesnext-refmap.json"
+    //mixin.defaultRefmapName.set("inventoryprofilesnext-refmap.json")
+    refmapName = "smallbuildtweaks-refmap.json"
 }
 
 afterEvaluate {
@@ -79,10 +100,6 @@ afterEvaluate {
 
 tasks.named<DefaultTask>("build") {
     dependsOn(tasks["remapShadedJar"])
-}
-
-configure<LoomGradleExtension> {
-    refmapName = "smallbuildtweaks-refmap.json"
 }
 
 val remapped = tasks.register<RemapJarTask>("remapShadedJar") {

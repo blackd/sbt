@@ -3,20 +3,20 @@
   "id": "smallbuildtweaks",
   "version": "@VERSION@",
   "name": "Small Build Tweaks",
-  "description": "Brings back the survival tweaks from Inventory Profile Next",
+  "description": "These are the tweaks/cheats removed from Inventory Profiles Next",
   "authors": [
     "mirinimi/blackd"
   ],
   "contact": {
-    "homepage": "https://www.curseforge.com/minecraft/mc-mods/inventory-profiles-next",
-    "sources": "https://github.com/blackd/Inventory-Profiles"
+    "homepage": "https://github.com/blackd/sbt",
+    "sources": "https://github.com/blackd/sbt"
   },
   "license": "@LICENSE@",
   "icon": "assets/smallbuildtweaks/icon.png",
   "environment": "client",
   "entrypoints": {
     "main": [
-      "org.anti_ad.mc.ipnext.InventoryProfilesKt::init"
+      "org.anti_ad.mc.sbt.ipnext.InventoryProfilesKt::init"
     ],
     "modmenu": [
       "org.anti_ad.mc.sbt.ipnext.compat.ModMenuApiImpl"
