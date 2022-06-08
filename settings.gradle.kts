@@ -9,7 +9,7 @@
 
 rootProject.name = "SmallBuildTweaks"
 include("common")
-
+include("platforms:fabric-1.19")
 include("platforms:fabric-1.18")
 include("platforms:fabric-1.17")
 include("platforms:fabric-1.16")

@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "id": "smallbuildtweaks",
+  "version": "@VERSION@",
+  "name": "Small Build Tweaks",
+  "description": "These are the tweaks/cheats removed from Inventory Profiles Next",
+  "authors": [
+    "mirinimi/blackd"
+  ],
+  "contact": {
+    "homepage": "https://github.com/blackd/sbt",
+    "sources": "https://github.com/blackd/sbt"
+  },
+  "license": "@LICENSE@",
+  "icon": "assets/smallbuildtweaks/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "main": [
+      "org.anti_ad.mc.sbt.ipnext.InventoryProfilesKt::init"
+    ],
+    "modmenu": [
+      "org.anti_ad.mc.sbt.ipnext.compat.ModMenuApiImpl"
+    ]
+  },
+  "mixins": [
+    "mixins.smallbuildtweaks-common.json",
+    "mixins.smallbuildtweaks.json"
+  ],
+  "depends": {
+    "fabric-resource-loader-v0": "*",
+    "fabricloader": ">=0.11.6",
+    "minecraft": ">=1.18"
+  },
+  "suggests": {
+    "flamingo": "*"
+  },
+  "custom": {
+    "modmenu:clientsideOnly": true
+  }
+}

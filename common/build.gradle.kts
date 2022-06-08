@@ -3,11 +3,10 @@ import org.anti_ad.mc.configureDependencies
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
+    kotlin("jvm") //version "1.6.21"
+    kotlin("plugin.serialization") //version "1.6.21"
     `java-library`
-    `maven-publish`
-    //kotlin("jvm") version "1.5.21"
     idea
-    antlr
 }
 
 configureCompilation()
@@ -16,7 +15,7 @@ configureDependencies()
 group = "org.anti_ad.mc.common"
 
 dependencies {
-    "shadedApi"("commons-io:commons-io:2.6")
+    "shadedApi"("commons-io:commons-io:2.11.0")
     "compileOnly"(group = "com.google.code.gson",
                   name = "gson",
                   version = "2.8.7")
@@ -35,32 +34,12 @@ dependencies {
 
 }
 
-val compileKotlin: KotlinCompile by tasks
-compileKotlin.kotlinOptions {
-    languageVersion = "1.5"
+tasks.named<KotlinCompile>("compileKotlin") {
+    kotlinOptions {
+        jvmTarget = "1.8"
+        freeCompilerArgs = listOf("-opt-in=kotlin.ExperimentalStdlibApi")
+    }
 }
-
-publishing {
-    publications {
-        create<MavenPublication>("mavenJava") {
-//            artifact(tasks["sourcesJar"])
-            artifact(tasks["jar"])
-        }
-    }
-
-    repositories {
-        val mavenUrl = "https://repo.codemc.io/repository/maven-releases/"
-        val mavenSnapshotUrl = "https://repo.codemc.io/repository/maven-snapshots/"
-
-        maven(mavenUrl) {
-            val mavenUsername: String? by project
-            val mavenPassword: String? by project
-            if (mavenUsername != null && mavenPassword != null) {
-                credentials {
-                    username = mavenUsername
-                    password = mavenPassword
-                }
-            }
-        }
-    }
+repositories {
+    mavenCentral()
 }

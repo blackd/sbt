@@ -1,6 +1,4 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
-import com.modrinth.minotaur.TaskModrinthUpload
-//import net.fabricmc.loom.LoomGradleExtension
 import net.fabricmc.loom.task.RemapJarTask
 import org.anti_ad.mc.configureCommon
 import proguard.gradle.ProGuardTask
@@ -23,13 +21,12 @@ logger.lifecycle("""
     """.trimIndent())
 
 plugins {
+    kotlin("jvm")
+    kotlin("plugin.serialization")
+    idea
     `java-library`
-    //kotlin("jvm") version "1.5.21"
-    id("fabric-loom").version(loom_version_116)
-    `maven-publish`
-    antlr
-    id("com.matthewprenger.cursegradle") version "1.4.0"
-    id("com.modrinth.minotaur") version "1.2.1"
+    id("fabric-loom")
+
 }
 
 configureCommon()
@@ -76,7 +73,40 @@ loom {
     runConfigs["client"].programArgs += listOf("--width=1280", "--height=720", "--username=DEV")
     //refmapName = "inventoryprofilesnext-refmap.json"
     //mixin.defaultRefmapName.set("inventoryprofilesnext-refmap.json")
-    refmapName = "smallbuildtweaks-refmap.json"
+    mixin.defaultRefmapName.set("smallbuildtweaks-refmap.json")
+}
+
+tasks.named<ShadowJar>("shadowJar") {
+
+    configurations = listOf(project.configurations["shaded"])
+
+    archiveClassifier.set("shaded")
+    setVersion(project.version)
+
+    relocate("org.antlr", "org.anti_ad.mc.sbt.common.embedded.org.antlr")
+    relocate("org.apache.commons", "org.anti_ad.mc.sbt.common.embedded.org.apache.commons")
+    relocate("kotlin", "org.anti_ad.mc.sbt.common.embedded.kotlin")
+
+    //include("assets/**")
+
+    exclude("**/*.kotlin_metadata")
+    exclude("**/*.kotlin_module")
+    exclude("**/*.kotlin_builtins")
+    exclude("**/*_ws.class") // fixme find a better solution for removing *.ws.kts
+    exclude("**/*_ws$*.class")
+    exclude("mappings/mappings.tiny") // before kt, build .jar don"t have this folder (this 500K thing)
+    exclude("com/ibm/**")
+    exclude("org/glassfish/**")
+    exclude("org/intellij/**")
+    exclude("org/jetbrains/**")
+    exclude("org/jline/**")
+    exclude("net/minecraftforge/**")
+    exclude("io/netty/**")
+    //exclude("mappings/mappings.tiny") // before kt, build .jar don"t have this folder (this 500K thing)
+    exclude("META-INF/maven/**")
+    exclude("META-INF/LICENSE")
+    exclude("META-INF/README")
+    minimize()
 }
 
 afterEvaluate {
@@ -96,22 +126,14 @@ afterEvaluate {
         dependsOn("injectCommonResources")
         finalizedBy("removeCommonResources")
     }
+    tasks.named<Task>("prepareRemapJar") {
+        val proGuardTask = tasks.getByName<Task>("proguard")
+        mustRunAfter(proGuardTask)
+    }
 }
 
 tasks.named<DefaultTask>("build") {
     dependsOn(tasks["remapShadedJar"])
-}
-
-val remapped = tasks.register<RemapJarTask>("remapShadedJar") {
-    group = "fabric"
-    val shadowJar = tasks.getByName<ShadowJar>("shadowJar")
-    val proGuardTask = tasks.getByName<ProGuardTask>("proguard")
-    dependsOn(proGuardTask)
-    input.set( File("build/libs/${shadowJar.archiveBaseName.get()}-all-proguard.jar"))
-    archiveFileName.set(shadowJar.archiveFileName.get().replace(Regex("-shaded\\.jar$"), ".jar"))
-    addNestedDependencies.set(true)
-    //addDefaultNestedDependencies.set(false)
-    //remapAccessWidener.set(true)
 }
 
 val proguard by tasks.registering(ProGuardTask::class) {
@@ -133,76 +155,16 @@ val proguard by tasks.registering(ProGuardTask::class) {
     dependsOn(tasks["shadowJar"])
 }
 
-
-
-configure<com.matthewprenger.cursegradle.CurseExtension> {
-
-    if (System.getenv("CURSEFORGE_DEPOY_TOKEN") != null && System.getenv("IPNEXT_RELEASE") != null) {
-        apiKey = System.getenv("CURSEFORGE_DEPOY_TOKEN")
-    }
-
-    project(closureOf<com.matthewprenger.cursegradle.CurseProject> {
-        id = "495267"
-        changelogType = "markdown"
-        changelog = file("../../changelog.md")
-        releaseType = "release"
-        supported_minecraft_versions.forEach {
-            if (!it.toLowerCase().contains("pre") && !it.toLowerCase().contains("shanpshot")) {
-                this.addGameVersion(it)
-            }
-        }
-        val fabricRemapJar = tasks.named<org.gradle.jvm.tasks.Jar>("remapShadedJar").get()
-        val remappedJarFile = fabricRemapJar.archiveFile.get().asFile
-        logger.lifecycle("""
-            +*************************************************+
-            Will release ${remappedJarFile.path}
-            +*************************************************+
-        """.trimIndent())
-        mainArtifact(remappedJarFile, closureOf<com.matthewprenger.cursegradle.CurseArtifact> {
-            displayName = "smallbuildtweaks-fabric-$minecraft_version-$mod_version"
-        })
-
-        afterEvaluate {
-            uploadTask.dependsOn("build")
-        }
-
-    })
-    options(closureOf<com.matthewprenger.cursegradle.Options> {
-        debug = false
-        javaIntegration = false
-        forgeGradleIntegration = mod_loader == "forge"
-    })
-}
-
-// ============
-// modrith
-// ============
-
-
-val publishModrinth by tasks.registering(TaskModrinthUpload::class) {
-
-    onlyIf {
-        System.getenv("MODRINTH_TOKEN") != null && System.getenv("IPNEXT_RELEASE") != null
-    }
-
-    token = System.getenv("MODRINTH_TOKEN") // An environment property called MODRINTH_TOKEN that is your token, set via Gradle CLI, GitHub Actions, Idea Run Configuration, or other
-
-    projectId = "O7RBXm3n"
-    versionNumber = "$mod_loader-$minecraft_version-$mod_version" // Will fail if Modrinth has this version already
-    // On fabric, use 'remapJar' instead of 'jar'
-    this.changelog
-    val fabricRemapJar = tasks.named<org.gradle.jvm.tasks.Jar>("remapShadedJar").get()
-    val remappedJarFile = fabricRemapJar.archiveFile
-    uploadFile = remappedJarFile // This is the java jar task. If it can't find the jar, try 'jar.outputs.getFiles().asPath' in place of 'jar'
-    supported_minecraft_versions.forEach { ver ->
-        addGameVersion(ver) // Call this multiple times to add multiple game versions. There are tools that can help you generate the list of versions
-    }
-    logger.lifecycle("""
-        +*************************************************+
-        Will release ${remappedJarFile.get().asFile.path}
-        +*************************************************+
-    """.trimIndent())
-    versionName = "IPN $mod_version for $mod_loader $minecraft_version"
-    changelog = project.rootDir.resolve("changelog.md").readText()
-    addLoader(mod_loader)
+val remapped = tasks.named<RemapJarTask>("remapJar") {
+    group = "fabric"
+    val shadowJar = tasks.getByName<ShadowJar>("shadowJar")
+    val proGuardTask = tasks.getByName<ProGuardTask>("proguard")
+    dependsOn(proGuardTask)
+    input.set( File("build/libs/${shadowJar.archiveBaseName.get()}-all-proguard.jar"))
+    val finalName = shadowJar.archiveFileName.get().replace(Regex("-shaded\\.jar$"), ".jar")
+    logger.lifecycle("&&&&&&&&&&& final jar name $finalName")
+    archiveFileName.set(finalName)
+    addNestedDependencies.set(true)
+    //addDefaultNestedDependencies.set(false)
+    //remapAccessWidener.set(true)
 }

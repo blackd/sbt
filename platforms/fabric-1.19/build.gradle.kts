@@ -3,13 +3,14 @@ import net.fabricmc.loom.task.RemapJarTask
 import org.anti_ad.mc.configureCommon
 import proguard.gradle.ProGuardTask
 
-val supported_minecraft_versions = listOf("1.17", "1.17.1")
+val supported_minecraft_versions = listOf("1.19")
 val mod_loader = "fabric"
 val mod_version = project.version.toString()
-val minecraft_version = "1.17.1"
-val mappings_version = "1.17.1+build.63"
-val loader_version = "0.12.4"
-val modmenu_version = "2.0.2"
+val minecraft_version = "1.19"
+val mappings_version = "1.19+build.1"
+val loader_version = "0.14.6"
+val modmenu_version = "4.0.0-beta.4"
+val fabric_api_version = "0.55.2+1.19"
 
 
 
@@ -35,41 +36,35 @@ plugins {
 
 configureCommon()
 
-java {
-    sourceCompatibility = JavaVersion.VERSION_16
-    targetCompatibility = JavaVersion.VERSION_16
+group = "org.anti_ad.mc.fabric_1_17"
+
+configure<JavaPluginExtension> {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
 }
 
 val compileKotlin: org.jetbrains.kotlin.gradle.tasks.KotlinCompile by tasks
 compileKotlin.kotlinOptions {
     languageVersion = "1.5"
-    jvmTarget = "16"
+    jvmTarget = "17"
 }
-
-//this is here so we always compile for 1.8
-tasks.withType<JavaCompile> {
-    this.targetCompatibility = "16"
-}
-
-group = "org.anti_ad.mc.fabric_1_17"
-
 
 dependencies {
     "shadedApi"(project(":common"))
     implementation("org.apache.commons:commons-rng-core:1.3")
     implementation("commons-io:commons-io:2.4")
 
-    implementation("com.guardsquare:proguard-gradle:7.1.1")
+    implementation("com.guardsquare:proguard-gradle:7.2.0-beta2")
     minecraft("com.mojang:minecraft:$minecraft_version")
     mappings("net.fabricmc:yarn:$mappings_version:v2")
     modImplementation("net.fabricmc:fabric-loader:$loader_version")
     modImplementation("com.terraformersmc:modmenu:$modmenu_version")
-    modImplementation("net.fabricmc.fabric-api:fabric-api:0.40.1+1.17")
+    modImplementation("net.fabricmc.fabric-api:fabric-api:$fabric_api_version")
 }
 
 loom {
 
-    runConfigs["client"].runDir = "run/1.17.x"
+    runConfigs["client"].runDir = "run/1.19.x"
     //runConfigs["client"].programArg("--username=DEV")
     runConfigs["client"].programArgs.addAll(listOf<String>("--width=1280", "--height=720", "--username=DEV"))
     //--width=1280, --height=720
@@ -133,7 +128,7 @@ afterEvaluate {
 }
 
 tasks.named<DefaultTask>("build") {
-    dependsOn(tasks["remapShadedJar"])
+    dependsOn(tasks["remapJar"])
 }
 
 val proguard by tasks.registering(ProGuardTask::class) {

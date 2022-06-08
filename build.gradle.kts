@@ -9,7 +9,7 @@ buildscript {
     }
 }
 
-val versionObj = Version("1", "0", "2",
+val versionObj = Version("1", "0", "3",
                              preRelease = (System.getenv("IPNEXT_RELEASE") == null))
 
 
@@ -27,10 +27,13 @@ repositories {
 }
 
 plugins {
-    `maven-publish`
-    kotlin("jvm") version "1.6.0"
+    `kotlin-dsl`
+    kotlin("jvm") version "1.6.21"
+    kotlin("plugin.serialization") version "1.6.21"
     idea
-    
+    `java-library`
+    id("com.github.johnrengelman.shadow") version "7.1.2" apply false
+    id("fabric-loom") version(loom_version_117) apply false
 }
 
 // This is here but it looks like it's not inherited by the child projects
@@ -81,7 +84,7 @@ tasks.register<Copy>("copyPlatformJars") {
         isFabric || isForge
     }.forEach {
         val isForge = !it.name.startsWith("fabric")
-        val taskName = if (isForge) { "shadowJar" } else { "remapShadedJar" }
+        val taskName = if (isForge) { "shadowJar" } else { "remapJar" }
         val jarTask = it.tasks.named<org.gradle.jvm.tasks.Jar>(taskName)
         dependsOn(jarTask)
         if (isForge) {

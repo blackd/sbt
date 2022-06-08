@@ -13,9 +13,9 @@ Minimal efforts will be made to make it work on major version updates of Minecra
 
 
 [1]: https://img.shields.io/github/downloads/blackd/sbt/total?style=plastic&label=GitHub%0aDownloads&logo=github
-[2]: https://github.com/blackd/Inventory-Profiles/releases/latest
+[2]: https://github.com/blackd/sbt/releases/latest
 
-[3]: https://github.com/blackd/Inventory-Profiles/releases/tag/v1.0.0
+[3]: https://github.com/blackd/Inventory-Profiles/
 [7]: https://discord.gg/23YCxmveUM
 [8]: https://img.shields.io/discord/861171785897738240?label=Discord&logo=discord&style=plastic
 

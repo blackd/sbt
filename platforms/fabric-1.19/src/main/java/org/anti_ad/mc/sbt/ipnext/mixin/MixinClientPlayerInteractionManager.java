@@ -26,12 +26,12 @@ public class MixinClientPlayerInteractionManager {
         }
     }
 
-    @Inject(at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/client/network/ClientPlayerInteractionManager;"
-            + "breakBlock(Lnet/minecraft/util/math/BlockPos;)Z"),
+
+    @Inject(at = @At(value = "FIELD", target = "Lnet/minecraft/client/network/ClientPlayerInteractionManager;blockBreakingCooldown:I"),
             method = "attackBlock(Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/util/math/Direction;)Z")
     public void attackBlock(BlockPos blockPos_1, Direction direction_1, CallbackInfoReturnable<Boolean> info) {
         if (Tweaks.INSTANCE.getINSTANT_MINING_COOLDOWN().getBooleanValue()) {
-            this.blockBreakingCooldown = 0;
+            this.blockBreakingCooldown = 5;
         }
     }
 
