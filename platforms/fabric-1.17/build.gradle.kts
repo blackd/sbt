@@ -133,7 +133,7 @@ afterEvaluate {
 }
 
 tasks.named<DefaultTask>("build") {
-    dependsOn(tasks["remapShadedJar"])
+    dependsOn(tasks["remapJar"])
 }
 
 val proguard by tasks.registering(ProGuardTask::class) {
