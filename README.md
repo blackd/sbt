@@ -1,15 +1,12 @@
 [![1][1]][2] **[![8][8]][7]**
-# Small Build Tweaks
 
-This mod contains the tweaks removed in this release of [Inventory Profile Next][3]
+# THIS MOD IS NO LOGNER SUPPORTED PLEASE USE
 
-## Will this mod be released on CurseForge, Modrinth, somewhere else.
+https://www.curseforge.com/minecraft/mc-mods/ipn-rejects
 
-NO
+https://modrinth.com/mod/ipn-rejects
 
-## Will it be updated.
-
-Minimal efforts will be made to make it work on major version updates of Minecraft.
+https://github.com/blackd/IPN-Rejects/releases/latest
 
 
 [1]: https://img.shields.io/github/downloads/blackd/sbt/total?style=plastic&label=GitHub%0aDownloads&logo=github
